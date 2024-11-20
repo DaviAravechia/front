@@ -1,0 +1,9 @@
+Passo a Passo para o Front
+
+git clone https://github.com/DaviAravechia/front.git
+
+cd front
+cd web
+npm install
+
+npm run dev
