@@ -1,85 +1,74 @@
 import React, { useState } from 'react';
 import api from '../api';
 
-function CadastroPaciente() {
-  const [formData, setFormData] = useState({
-    nome: '',
-    data_nascimento: '',
-    telefone: '',
-    historico_medico: '',
-    cpf: '',
-  });
+const Cadastro = () => {
+    const [formData, setFormData] = useState({
+        nome: '',
+        data_nascimento: '',
+        telefone: '',
+        cpf: '',
+        historico_medico: '',
+    });
+    const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post('restrito/pacientes/', formData);
-      alert('Paciente cadastrado com sucesso!');
-    } catch (err) {
-      console.error('Erro ao cadastrar paciente:', err);
-    }
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await api.post('restrito/pacientes/', formData);
+            setMessage('Paciente cadastrado com sucesso!');
+        } catch (error) {
+            setMessage('Erro no cadastro: ' + error.response.data.detail);
+        }
+    };
 
-  return (
-    <div>
-      <h2>Cadastro de Paciente</h2>
-      <form onSubmit={handleSubmit}>
+    return (
         <div>
-          <label>Nome:</label>
-          <input
-            type="text"
-            name="nome"
-            value={formData.nome}
-            onChange={handleChange}
-            required
-          />
+            <h2>Cadastrar Paciente</h2>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    name="nome"
+                    placeholder="Nome"
+                    value={formData.nome}
+                    onChange={handleChange}
+                />
+                <input
+                    type="date"
+                    name="data_nascimento"
+                    placeholder="Data de Nascimento"
+                    value={formData.data_nascimento}
+                    onChange={handleChange}
+                />
+                <input
+                    type="text"
+                    name="telefone"
+                    placeholder="Telefone"
+                    value={formData.telefone}
+                    onChange={handleChange}
+                />
+                <input
+                    type="text"
+                    name="cpf"
+                    placeholder="CPF"
+                    value={formData.cpf}
+                    onChange={handleChange}
+                />
+                <textarea
+                    name="historico_medico"
+                    placeholder="Histórico Médico"
+                    value={formData.historico_medico}
+                    onChange={handleChange}
+                />
+                <button type="submit">Cadastrar</button>
+            </form>
+            {message && <p>{message}</p>}
         </div>
-        <div>
-          <label>Data de Nascimento:</label>
-          <input
-            type="date"
-            name="data_nascimento"
-            value={formData.data_nascimento}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Telefone:</label>
-          <input
-            type="text"
-            name="telefone"
-            value={formData.telefone}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Histórico Médico:</label>
-          <textarea
-            name="historico_medico"
-            value={formData.historico_medico}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-        <div>
-          <label>CPF:</label>
-          <input
-            type="text"
-            name="cpf"
-            value={formData.cpf}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Cadastrar</button>
-      </form>
-    </div>
-  );
-}
+    );
+};
 
-export default CadastroPaciente;
+export default Cadastro;

@@ -1,56 +1,48 @@
-import React, { useState } from 'react';
-import api from '../api';
+import React, { useState } from "react";
+import api from "../api"; // Certifique-se de que a URL base está configurada corretamente
 
-function Login() {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
+const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.post('auth/register/', formData);
-      console.log('Login bem-sucedido:', response.data);
-      localStorage.setItem('token', response.data.token); // Salvar token, se necessário
-      setError('');
-      window.location.href = '/pacientes'; // Redirecionar para pacientes
-    } catch (err) {
-      setError('Erro ao fazer login. Verifique suas credenciais.');
-    }
-  };
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await api.post("/auth/token/", { username, password });
+            console.log("Login bem-sucedido:", response.data);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+            // Armazena o token de acesso
+            localStorage.setItem("accessToken", response.data.access);
+            localStorage.setItem("refreshToken", response.data.refresh);
 
-  return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Usuário:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Senha:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Entrar</button>
-      </form>
-    </div>
-  );
-}
+            // Redirecionar ou realizar outras ações
+            window.location.href = "/pacientes";
+        } catch (err) {
+            console.error("Erro no login:", err.response?.data || err.message);
+            setError("Erro ao fazer login. Verifique suas credenciais.");
+        }
+    };
+
+    return (
+        <form onSubmit={handleLogin}>
+            <h1>Login</h1>
+            <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit">Login</button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+        </form>
+    );
+};
 
 export default Login;
