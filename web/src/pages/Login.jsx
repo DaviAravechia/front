@@ -9,7 +9,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post("/auth/token/", { username, password });
+            const response = await api.post("/auth/register/", { username, password });
             console.log("Login bem-sucedido:", response.data);
 
             // Armazena o token de acesso

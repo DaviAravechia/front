@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 import { refreshToken } from './auth'; // Importe a função de renovação do token
 
 const api = axios.create({
@@ -49,5 +50,23 @@ api.interceptors.response.use(
     }
 );
 
-// **Adicione esta linha para exportar a instância do Axios como padrão**
+const enviarDados = async () => {
+    try {
+        const response = await api.post('/auth/login/', { username: 'Teste', password: '1234', email: 'teste@email.com' });
+        console.log('Dados enviados com sucesso:', response.data);
+    } catch (error) {
+        console.error('Erro ao enviar os dados:', error);
+        if (error.response) {
+            console.error('Erro do servidor:', error.response.data);
+        } else if (error.request) {
+            console.error('Sem resposta do servidor:', error.request);
+        } else {
+            console.error('Erro na configuração:', error.message);
+        }
+    }
+};
+
+enviarDados();
+
+
 export default api;
