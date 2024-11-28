@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api';
+import React, { useEffect, useState } from "react";
+import api from "../api";
 
 function Pacientes() {
   const [pacientes, setPacientes] = useState([]);
@@ -7,13 +7,13 @@ function Pacientes() {
   useEffect(() => {
     const fetchPacientes = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await api.get('pacientes/<uuid:paciente_id>/consultas/', {
+        const token = localStorage.getItem("token");
+        const response = await api.get("paciente/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPacientes(response.data);
       } catch (err) {
-        console.error('Erro ao buscar pacientes:', err);
+        console.error("Erro ao buscar pacientes:", err);
       }
     };
 
