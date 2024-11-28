@@ -8,11 +8,10 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('auth/register/', formData);
-      console.log('Login bem-sucedido:', response.data);
-      localStorage.setItem('token', response.data.token); // Salvar token, se necessário
-      setError('');
-      window.location.href = '/pacientes'; // Redirecionar para pacientes
+      const response = await api.post('auth/jwt-login/', formData); // Faz login com JWT
+      localStorage.setItem('token', response.data.access); // Salva o token de acesso
+      alert('Login bem-sucedido!');
+      window.location.href = '/pacientes'; // Redireciona para a lista de pacientes
     } catch (err) {
       setError('Erro ao fazer login. Verifique suas credenciais.');
     }

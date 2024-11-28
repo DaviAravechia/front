@@ -7,7 +7,10 @@ function Pacientes() {
   useEffect(() => {
     const fetchPacientes = async () => {
       try {
-        const response = await api.get('restrito/pacientes/');
+        const token = localStorage.getItem('token');
+        const response = await api.get('pacientes/<uuid:paciente_id>/consultas/', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setPacientes(response.data);
       } catch (err) {
         console.error('Erro ao buscar pacientes:', err);
@@ -22,7 +25,12 @@ function Pacientes() {
       <h2>Lista de Pacientes</h2>
       <ul>
         {pacientes.map((paciente) => (
-          <li key={paciente.id}>{paciente.nome}</li>
+          <li key={paciente.uuid}>
+            <p>Nome: {paciente.nome}</p>
+            <button onClick={() => (window.location.href = `/pacientes/${paciente.uuid}/consultas`)}>
+              Ver Consultas
+            </button>
+          </li>
         ))}
       </ul>
     </div>

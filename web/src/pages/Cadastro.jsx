@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
 import api from '../api';
 
+
 function CadastroPaciente() {
   const [formData, setFormData] = useState({
     nome: '',
     data_nascimento: '',
     telefone: '',
+    email: '',
     historico_medico: '',
-    cpf: '',
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('restrito/pacientes/', formData);
+      const token = localStorage.getItem('token'); // Recupera o token do localStorage
+      if (!token) {
+        alert('Usuário não autenticado.');
+        return;
+      }
+
+      // Adiciona o token no cabeçalho da requisição
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      await api.post('restrito/paciente/create/', formData, { headers });
       alert('Paciente cadastrado com sucesso!');
+      window.location.href = '/pacientes';
     } catch (err) {
       console.error('Erro ao cadastrar paciente:', err);
     }
@@ -59,22 +72,22 @@ function CadastroPaciente() {
           />
         </div>
         <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
           <label>Histórico Médico:</label>
           <textarea
             name="historico_medico"
             value={formData.historico_medico}
             onChange={handleChange}
           ></textarea>
-        </div>
-        <div>
-          <label>CPF:</label>
-          <input
-            type="text"
-            name="cpf"
-            value={formData.cpf}
-            onChange={handleChange}
-            required
-          />
         </div>
         <button type="submit">Cadastrar</button>
       </form>
