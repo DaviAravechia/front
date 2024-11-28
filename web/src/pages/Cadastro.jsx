@@ -19,17 +19,21 @@ function CadastroPaciente() {
         alert('Usuário não autenticado.');
         return;
       }
-
+  
       // Adiciona o token no cabeçalho da requisição
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-
-      await api.post('restrito/paciente/create/', formData, { headers });
+  
+      console.log('Form Data:', formData); // Debug
+      console.log('Headers:', headers); // Debug
+  
+      await api.post('paciente/create/', formData, { headers });
       alert('Paciente cadastrado com sucesso!');
       window.location.href = '/pacientes';
     } catch (err) {
       console.error('Erro ao cadastrar paciente:', err);
+      alert('Erro ao cadastrar paciente. Verifique o console para mais detalhes.');
     }
   };
 

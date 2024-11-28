@@ -27,7 +27,7 @@ function Pacientes() {
         {pacientes.map((paciente) => (
           <li key={paciente.uuid}>
             <p>Nome: {paciente.nome}</p>
-            <button onClick={() => (window.location.href = `/pacientes/${paciente.uuid}/consultas`)}>
+            <button onClick={() => (window.location.href = `/pacientes//${paciente.uuid}/consultas`)}>
               Ver Consultas
             </button>
           </li>
