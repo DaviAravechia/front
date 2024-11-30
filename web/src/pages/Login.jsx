@@ -1,75 +1,48 @@
 import React, { useState } from 'react';
-import api from '../api'; // Assumindo que você tem um arquivo de configuração da API
+import { login } from '../api'; // Importa o método login do api.js
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
-  // Estado para armazenar os dados do formulário
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [error, setError] = useState(''); // Estado para exibir erros
+const Login = () => {
+  const [usuario, setUsuario] = useState('');
+  const [senha, setSenha] = useState('');
+  const navigate = useNavigate();
 
-  // Função chamada ao enviar o formulário
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita recarregar a página
+    e.preventDefault();
     try {
-      // Envia os dados para o endpoint de login
-      const response = await api.post('auth/jwt-login/', formData); // URL do Django para login JWT
-      localStorage.setItem('token', response.data.access); // Salva o token JWT no localStorage
-      alert('Login bem-sucedido!'); // Exibe mensagem de sucesso
-      window.location.href = '/pacientes'; // Redireciona para a página de pacientes
+      const response = await login({ username: usuario, password: senha }); // Chama o método login
+      localStorage.setItem('token', response.data.access); // Salva o token de acesso
+      alert('Login realizado com sucesso!');
+      navigate('/restrito/paciente'); // Redireciona após login bem-sucedido
     } catch (err) {
-      setError('Erro ao fazer login. Verifique suas credenciais.');
+      console.error('Erro ao fazer login:', err.response?.data || err.message);
+      const message = err.response?.data?.detail || 'Erro ao fazer login. Verifique suas credenciais.';
+      alert(message);
     }
-  };
-
-  // Função para atualizar os dados do formulário conforme o usuário digita
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Função para lidar com logout (se necessário)
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove o token JWT do localStorage
-    alert('Logout realizado com sucesso!');
-    window.location.href = '/'; // Redireciona para a página de login
   };
 
   return (
     <div>
-      {localStorage.getItem('token') ? ( // Se o usuário já estiver logado, exibe o botão de logout
-        <>
-          <h2>Você já está logado!</h2>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Usuário:</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Senha:</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Exibe erros */}
-            <button type="submit">Entrar</button>
-          </form>
-        </>
-      )}
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Usuário:</label>
+        <input
+          type="text"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+          placeholder="Digite seu usuário"
+        />
+        <label>Senha:</label>
+        <input
+          type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          placeholder="Digite sua senha"
+        />
+        <button type="submit">Entrar</button>
+      </form>
     </div>
   );
-}
+};
 
 export default Login;

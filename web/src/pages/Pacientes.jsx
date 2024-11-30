@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from "react";
-import api from "../api";
+import React, { useState, useEffect } from 'react';
+import { fetchPacientes } from '../api';
 
-function Pacientes() {
-  const [pacientes, setPacientes] = useState([]);
+const Pacientes = () => {
+    const [pacientes, setPacientes] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchPacientes = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await api.get("paciente/", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setPacientes(response.data);
-      } catch (err) {
-        console.error("Erro ao buscar pacientes:", err);
-      }
-    };
+    useEffect(() => {
+        const getPacientes = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetchPacientes(token);
+                setPacientes(response.data);
+            } catch (err) {
+                setError('Erro ao carregar pacientes.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        getPacientes();
+    }, []);
 
-    fetchPacientes();
-  }, []);
+    if (loading) return <p>Carregando...</p>;
+    if (error) return <p className="error">{error}</p>;
 
-  return (
-    <div>
-      <h2>Lista de Pacientes</h2>
-      <ul>
-        {pacientes.map((paciente) => (
-          <li key={paciente.uuid}>
-            <p>Nome: {paciente.nome}</p>
-            <button onClick={() => (window.location.href = `/pacientes//${paciente.uuid}/consultas`)}>
-              Ver Consultas
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+    return (
+        <div>
+            <h1>Pacientes</h1>
+            <ul>
+                {pacientes.map((paciente) => (
+                    <li key={paciente.uuid}>
+                        {paciente.nome} - {paciente.data_nascimento}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 export default Pacientes;

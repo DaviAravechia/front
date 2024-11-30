@@ -1,37 +1,51 @@
-import React, { useEffect, useState } from "react";
-import api from "../api";
 
-function ConsultasPaciente({ pacienteId }) {
-  const [consultas, setConsultas] = useState([]);
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-  useEffect(() => {
-    const fetchConsultas = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await api.get(`paciente/${pacienteId}/consultas/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setConsultas(response.data);
-      } catch (err) {
-        console.error("Erro ao listar consultas:", err);
-      }
-    };
+const ConsultasPaciente = () => {
+    const { pacienteId } = useParams();
+    const [consultas, setConsultas] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    fetchConsultas();
-  }, [pacienteId]);
+    useEffect(() => {
+        const fetchConsultas = async () => {
+            try {
+                const response = await fetch(`/paciente/${pacienteId}/consultas/`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (!response.ok) throw new Error('Erro ao carregar consultas.');
+                const data = await response.json();
+                setConsultas(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  return (
-    <div>
-      <h2>Consultas do Paciente</h2>
-      <ul>
-        {consultas.map((consulta) => (
-          <li key={consulta.uuid}>
-            {consulta.descricao} - {consulta.data_hora}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+        fetchConsultas();
+    }, [pacienteId]);
+
+    if (loading) return <p>Carregando...</p>;
+    if (error) return <p className="error">{error}</p>;
+
+    return (
+        <div>
+            <h1>Consultas do Paciente</h1>
+            {consultas.length === 0 ? (
+                <p>Nenhuma consulta encontrada.</p>
+            ) : (
+                <ul>
+                    {consultas.map(consulta => (
+                        <li key={consulta.id}>
+                            <span>{consulta.data} - {consulta.horario}</span>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+};
 
 export default ConsultasPaciente;
