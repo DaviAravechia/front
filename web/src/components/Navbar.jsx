@@ -25,12 +25,6 @@ function Navbar() {
         {isAuthenticated && (
           <>
             <li>
-              <Link to="/cadastro">Cadastro</Link>
-            </li>
-            <li>
-              <Link to="/pacientes">Pacientes</Link>
-            </li>
-            <li>
               <button onClick={handleLogout} style={{ cursor: 'pointer' }}>
                 Logout
               </button>

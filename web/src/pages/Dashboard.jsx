@@ -6,9 +6,7 @@ const Dashboard = () => {
     <div style={styles.container}>
       <h1>Bem-vindo ao Sistema de Gerenciamento</h1>
       <div style={styles.links}>
-        <Link to="/pacientes" style={styles.link}>
-          <button style={styles.button}>Lista de Pacientes</button>
-        </Link>
+
         <Link to="/consultas" style={styles.link}>
           <button style={styles.button}>Lista de Consultas</button>
         </Link>
