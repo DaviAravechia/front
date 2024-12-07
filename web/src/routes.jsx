@@ -7,9 +7,12 @@ import Navbar from './components/Navbar';
 import EditarPaciente from './pages/EditarPaciente';
 import ListarMedicos from './medico/ListarMedicos';
 import CadastrarMedico from './medico/CadastrarMedico';
-import ListarConsultas from './medico/ListarConsultas';
+import ListarConsultas from './cosulta/ListarConsultas';
 import AgendarConsulta from './cosulta/AgendarConsulta';
+import EditarConsulta from './cosulta/EditarConsulta'; // Importar o componente de edição de consultas
 import Dashboard from './pages/Dashboard'; // Importação do Dashboard
+import AdminDashboard from './pages/AdminDashboard'; // Importação do Admin Dashboard
+
 function AppRoutes() {
   return (
     <Router>
@@ -54,6 +57,7 @@ function AppRoutes() {
             </>
           }
         />
+
         {/* Rotas para Médicos */}
         <Route
           path="/medicos"
@@ -73,6 +77,7 @@ function AppRoutes() {
             </>
           }
         />
+
         {/* Rotas para Consultas */}
         <Route
           path="/consultas"
@@ -84,21 +89,31 @@ function AppRoutes() {
           }
         />
         <Route
-          path="/medicos/cadastrar"
-          element={
-            <>
-              <Navbar />
-              <CadastrarMedico />
-            </>
-          }
-        
-        />
-        <Route
           path="/consultas/agendar"
           element={
             <>
               <Navbar />
               <AgendarConsulta />
+            </>
+          }
+        />
+        <Route
+          path="/consultas/:uuid/editar"
+          element={
+            <>
+              <Navbar />
+              <EditarConsulta />
+            </>
+          }
+        />
+
+        {/* Rotas do Admin */}
+        <Route
+          path="/admin-dashboard"
+          element={
+            <>
+              <Navbar />
+              <AdminDashboard />
             </>
           }
         />

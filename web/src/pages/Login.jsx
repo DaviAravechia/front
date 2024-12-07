@@ -6,23 +6,28 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Para exibir um estado de carregamento
-  const navigate = useNavigate(); // Para redirecionar
+  const [loading, setLoading] = useState(false);
+  const [isIntranet, setIsIntranet] = useState(false); // Alternar entre login comum e intranet
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true); 
-    setError(""); 
-  
+    setLoading(true);
+    setError("");
+
     try {
       const response = await api.post("/auth/jwt-login/", { username, password });
       console.log("Login bem-sucedido:", response.data);
-  
+
       localStorage.setItem("accessToken", response.data.access);
       localStorage.setItem("refreshToken", response.data.refresh);
-  
-      // Redirecionar para o Dashboard
-      navigate("/dashboard");
+
+      // Redirecionar com base no tipo de usuário
+      if (isIntranet) {
+        navigate("/dashboard"); // Página para superusuários
+      } else {
+        navigate("/dashboard"); // Página para usuários comuns
+      }
     } catch (err) {
       console.error("Erro no login:", err.response?.data || err.message);
       setError(err.response?.data?.detail || "Erro ao fazer login. Verifique suas credenciais.");
@@ -30,11 +35,30 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
+
   return (
     <div style={styles.container}>
       <form onSubmit={handleLogin} style={styles.form}>
         <h1 style={styles.title}>Login</h1>
+
+        {/* Alternar entre Usuário e Intranet */}
+        <div style={styles.toggleContainer}>
+          <button
+            type="button"
+            onClick={() => setIsIntranet(false)}
+            style={isIntranet ? styles.toggleButton : styles.activeToggleButton}
+          >
+            Usuário
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsIntranet(true)}
+            style={isIntranet ? styles.activeToggleButton : styles.toggleButton}
+          >
+            Intranet
+          </button>
+        </div>
+
         <input
           type="text"
           placeholder="Username"
@@ -55,14 +79,12 @@ const Login = () => {
           {loading ? "Entrando..." : "Login"}
         </button>
         {error && <p style={styles.error}>{error}</p>}
-        <p><span style={styles.criarCadastro}>Ainda não tem uma conta ?</span> <a href="/cadastro">Cadastre-se</a></p>
       </form>
-      
     </div>
   );
 };
 
-// Estilos em objeto para centralizar e melhorar a aparência
+// Estilos para o componente
 const styles = {
   container: {
     display: "flex",
@@ -71,10 +93,6 @@ const styles = {
     height: "100vh",
     backgroundColor: "#f4f4f9",
   },
-  criarCadastro : {
-    color: "#333",
-  },
-
   form: {
     padding: "2rem",
     borderRadius: "8px",
@@ -110,6 +128,28 @@ const styles = {
     marginTop: "1rem",
     color: "red",
     fontSize: "0.9rem",
+  },
+  toggleContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "1rem",
+  },
+  toggleButton: {
+    width: "48%",
+    padding: "10px",
+    backgroundColor: "#ddd",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+  },
+  activeToggleButton: {
+    width: "48%",
+    padding: "10px",
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
   },
 };
 

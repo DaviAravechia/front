@@ -4,7 +4,12 @@ import api from '../api';
 import BotaoInicio from '../botao/BotaoInicio'; // Botão para voltar ao Dashboard
 
 const CadastrarMedico = () => {
-  const [medico, setMedico] = useState({ nome: '', especialidade: '' });
+  const [medico, setMedico] = useState({
+    nome: '',
+    especialidade: '',
+    crm: '',
+    telefone: '',
+  });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -24,7 +29,7 @@ const CadastrarMedico = () => {
     try {
       await api.post('/medicos/', medico);
       setSuccess('Médico cadastrado com sucesso!');
-      setMedico({ nome: '', especialidade: '' });
+      setMedico({ nome: '', especialidade: '', crm: '', telefone: '' });
       navigate('/medicos'); // Redireciona para a lista de médicos
     } catch (err) {
       console.error('Erro ao cadastrar médico:', err.response?.data || err.message);
@@ -61,6 +66,26 @@ const CadastrarMedico = () => {
             required
           />
         </div>
+        <div>
+          <label>CRM:</label>
+          <input
+            type="text"
+            name="crm"
+            value={medico.crm}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Telefone:</label>
+          <input
+            type="tel"
+            name="telefone"
+            value={medico.telefone}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <button type="submit">Cadastrar</button>
       </form>
     </div>
@@ -68,3 +93,7 @@ const CadastrarMedico = () => {
 };
 
 export default CadastrarMedico;
+
+
+
+ 
