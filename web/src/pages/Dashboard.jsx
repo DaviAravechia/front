@@ -1,49 +1,52 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  text-align: center;
+  padding: 50px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+`;
+
+const Header = styled.h1`
+  color: #333;
+  margin-bottom: 30px;
+`;
+
+const LinkGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+`;
+
+const Button = styled(Link)`
+  text-decoration: none;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
 const Dashboard = () => {
   return (
-    <div style={styles.container}>
-      <h1>Bem-vindo ao Sistema de Gerenciamento</h1>
-      <div style={styles.links}>
-
-        <Link to="/consultas" style={styles.link}>
-          <button style={styles.button}>Lista de Consultas</button>
-        </Link>
-        <Link to="/medicos" style={styles.link}>
-          <button style={styles.button}>Lista de Médicos</button>
-        </Link>
-        <Link to="/consultas/agendar" style={styles.link}>
-          <button style={styles.button}>Agendar Consulta</button>
-        </Link>
-      </div>
-    </div>
+    <Container>
+      <Header>Bem-vindo ao Sistema de Gerenciamento</Header>
+      <LinkGroup>
+        <Button to="/consultas">Lista de Consultas</Button>
+        <Button to="/medicos">Lista de Médicos</Button>
+        <Button to="/consultas/agendar">Agendar Consulta</Button>
+        <Button to="/pacientes">Pacientes</Button>
+      </LinkGroup>
+    </Container>
   );
-};
-
-const styles = {
-  container: {
-    textAlign: 'center',
-    padding: '2rem',
-  },
-  links: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '1rem',
-    flexWrap: 'wrap',
-  },
-  link: {
-    textDecoration: 'none',
-  },
-  button: {
-    padding: '10px 20px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: 'none',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    cursor: 'pointer',
-  },
 };
 
 export default Dashboard;

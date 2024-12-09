@@ -1,6 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import api from '../api';
+
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const Header = styled.h1`
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+`;
+
+const SubmitButton = styled.button`
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
 
 const EditarPaciente = () => {
   const { id } = useParams();
@@ -11,25 +59,16 @@ const EditarPaciente = () => {
     telefone: '',
     historico_medico: '',
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!id) {
-      setError('ID do paciente não fornecido.');
-      return;
-    }
-
     const fetchPaciente = async () => {
-      setLoading(true);
       try {
         const response = await api.get(`/pacientes/${id}/`);
         setPaciente(response.data);
       } catch (err) {
         setError('Erro ao carregar dados do paciente.');
         console.error(err.response?.data || err.message);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -43,79 +82,73 @@ const EditarPaciente = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
     try {
       await api.put(`/pacientes/${id}/`, paciente);
       alert('Paciente atualizado com sucesso!');
       navigate('/pacientes');
     } catch (err) {
-      setError('Erro ao atualizar o paciente. Por favor, tente novamente.');
+      setError('Erro ao atualizar o paciente. Tente novamente.');
       console.error(err.response?.data || err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Editar Paciente</h1>
-      {loading && <p>Carregando dados...</p>}
+    <Container>
+      <Header>Editar Paciente</Header>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label>
-          <input
+        <FormGroup>
+          <Label>Nome:</Label>
+          <Input
             type="text"
             name="nome"
             value={paciente.nome || ''}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
-          <label>Data de Nascimento:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>CPF:</Label>
+          <Input
+            type="text"
+            name="cpf"
+            value={paciente.cpf || ''}
+            onChange={handleChange}
+            placeholder="Digite o CPF (somente números)"
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Data de Nascimento:</Label>
+          <Input
             type="date"
             name="data_nascimento"
             value={paciente.data_nascimento || ''}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
-          <label>Telefone:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>Telefone:</Label>
+          <Input
             type="text"
             name="telefone"
             value={paciente.telefone || ''}
             onChange={handleChange}
             required
           />
-        </div>
-        {/* <div>
-          <label>CPF:</label>
-          <input
-            type="text"
-            name="cpf"
-            value={paciente.cpf || ''}
-            onChange={handleChange}
-            required
-          />
-        </div> */}
-        <div>
-          <label>Histórico Médico:</label>
+        </FormGroup>
+        <FormGroup>
+          <Label>Histórico Médico:</Label>
           <textarea
             name="historico_medico"
             value={paciente.historico_medico || ''}
             onChange={handleChange}
           ></textarea>
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Salvando...' : 'Salvar'}
-        </button>
+        </FormGroup>
+        <SubmitButton type="submit">Salvar</SubmitButton>
       </form>
-    </div>
+    </Container>
   );
 };
 

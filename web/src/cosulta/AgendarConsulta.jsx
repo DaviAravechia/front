@@ -1,137 +1,145 @@
 import React, { useEffect, useState } from 'react';
-import api from '../api';
+import styled from 'styled-components';
 import BotaoInicio from '../botao/BotaoInicio';
+import api from '../api';
+
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const Header = styled.h1`
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
 
 const AgendarConsulta = () => {
   const [pacientes, setPacientes] = useState([]);
   const [medicos, setMedicos] = useState([]);
-  const [consulta, setConsulta] = useState({
-    paciente: '',
-    medico: '',
-    data_hora: '',
-    descricao: '',
-    status: 'agendada', // Valor padrão para o status
-  });
+  const [consulta, setConsulta] = useState({ paciente: '', medico: '', data_hora: '', descricao: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Função para buscar pacientes e médicos
   useEffect(() => {
     const fetchDados = async () => {
       try {
         const pacientesResponse = await api.get('/pacientes/');
-        console.log('Pacientes carregados:', pacientesResponse.data);
         setPacientes(pacientesResponse.data);
 
         const medicosResponse = await api.get('/medicos/');
-        console.log('Médicos carregados:', medicosResponse.data);
         setMedicos(medicosResponse.data);
       } catch (err) {
-        setError('Erro ao carregar pacientes ou médicos.');
+        setError('Erro ao carregar pacientes e médicos.');
         console.error('Erro:', err.response?.data || err.message);
       }
     };
     fetchDados();
   }, []);
 
-  // Função para agendar consulta
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
-    console.log('Dados enviados para agendamento:', consulta);
-
-    // Validar os dados antes do envio
-    if (!consulta.paciente || !consulta.medico || !consulta.data_hora) {
-      setError('Todos os campos são obrigatórios.');
-      return;
-    }
-
     try {
-      const response = await api.post('/consultas/', consulta);
-      console.log('Resposta do servidor:', response.data);
+      if (!consulta.paciente || !consulta.medico || !consulta.data_hora) {
+        setError('Todos os campos são obrigatórios.');
+        return;
+      }
+      await api.post('/consultas/', consulta);
       setSuccess('Consulta agendada com sucesso!');
-      setConsulta({
-        paciente: '',
-        medico: '',
-        data_hora: '',
-        descricao: '',
-        status: 'agendada',
-      });
+      setConsulta({ paciente: '', medico: '', data_hora: '', descricao: '' });
     } catch (err) {
-      const errorResponse = err.response?.data || 'Erro inesperado';
-      setError(`Erro ao agendar consulta: ${JSON.stringify(errorResponse)}`);
-      console.error('Erro:', errorResponse);
+      setError('Erro ao agendar consulta.');
+      console.error('Erro:', err.response?.data || err.message);
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setConsulta((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div>
-      <h1>Agendar Consulta</h1>
+    <Container>
       <BotaoInicio />
-
+      <Header>Agendar Consulta</Header>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
-
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Paciente:</label>
-          <select name="paciente" value={consulta.paciente} onChange={handleChange} required>
+        <FormGroup>
+          <Label>Paciente</Label>
+          <Select name="paciente" onChange={(e) => setConsulta({ ...consulta, paciente: e.target.value })}>
             <option value="">Selecione um paciente</option>
             {pacientes.map((paciente) => (
               <option key={paciente.uuid} value={paciente.uuid}>
                 {paciente.nome}
               </option>
             ))}
-          </select>
-        </div>
-        <div>
-          <label>Médico:</label>
-          <select name="medico" value={consulta.medico} onChange={handleChange} required>
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Médico</Label>
+          <Select name="medico" onChange={(e) => setConsulta({ ...consulta, medico: e.target.value })}>
             <option value="">Selecione um médico</option>
             {medicos.map((medico) => (
               <option key={medico.uuid} value={medico.uuid}>
-                {medico.nome} - {medico.especialidade || 'Especialidade não informada'}
+                {medico.nome}
               </option>
             ))}
-          </select>
-        </div>
-        <div>
-          <label>Data e Hora:</label>
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Data e Hora</Label>
           <input
             type="datetime-local"
             name="data_hora"
             value={consulta.data_hora}
-            onChange={handleChange}
-            required
+            onChange={(e) => setConsulta({ ...consulta, data_hora: e.target.value })}
           />
-        </div>
-        <div>
-          <label>Status:</label>
-          <select name="status" value={consulta.status} onChange={handleChange} required>
-            <option value="agendada">Agendada</option>
-            <option value="concluida">Concluída</option>
-            <option value="cancelada">Cancelada</option>
-          </select>
-        </div>
-        <div>
-          <label>Descrição:</label>
+        </FormGroup>
+        <FormGroup>
+          <Label>Descrição</Label>
           <textarea
             name="descricao"
             value={consulta.descricao}
-            onChange={handleChange}
-            placeholder="Descrição ou observações"
-          ></textarea>
-        </div>
-        <button type="submit">Agendar Consulta</button>
+            onChange={(e) => setConsulta({ ...consulta, descricao: e.target.value })}
+          />
+        </FormGroup>
+        <Button type="submit">Agendar Consulta</Button>
       </form>
-    </div>
+    </Container>
   );
 };
 
