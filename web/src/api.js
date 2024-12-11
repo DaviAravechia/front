@@ -52,7 +52,7 @@ api.interceptors.response.use(
 
 const enviarDados = async () => {
     try {
-        const response = await api.post('/auth/login/', { username: 'Teste', password: '1234', email: 'teste@email.com' });
+        const response = await api.post('/auth/jwt-login/', { username: 'Teste', password: '1234', email: 'teste@email.com' });
         console.log('Dados enviados com sucesso:', response.data);
     } catch (error) {
         console.error('Erro ao enviar os dados:', error);
@@ -66,7 +66,7 @@ const enviarDados = async () => {
     }
 };
 
-enviarDados();
+// enviarDados();
 
 
 export default api;

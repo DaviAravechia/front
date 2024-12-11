@@ -7,6 +7,7 @@ const Cadastro = () => {
     const [email, setEmail] = useState("");
     const [dataNascimento, setDataNascimento] = useState("");
     const [telefone, setTelefone] = useState("");
+    const [cpf, setCpf] = useState("");
     const [historicoMedico, setHistoricoMedico] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -23,12 +24,13 @@ const Cadastro = () => {
                 nome,
                 email,
                 data_nascimento: dataNascimento,
+                cpf,
                 telefone,
                 historico_medico: historicoMedico,
                 password,
             });
             alert("Cadastro realizado com sucesso!");
-            navigate("/login"); // Redireciona para o login após o cadastro
+            navigate("/"); // Redireciona para o login após o cadastro
         } catch (error) {
             console.error("Erro ao realizar cadastro:", error.response?.data || error.message);
             setError(error.response?.data?.detail || "Erro ao realizar cadastro. Tente novamente.");
@@ -54,6 +56,14 @@ const Cadastro = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    style={styles.input}
+                    required
+                />
+                <input 
+                    type="text" 
+                    placeholder="CPF"
+                    value={cpf}
+                    onChange={(e) => setCpf(e.target.value)}
                     style={styles.input}
                     required
                 />

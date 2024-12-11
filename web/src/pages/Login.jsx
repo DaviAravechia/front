@@ -79,6 +79,7 @@ const Login = () => {
           {loading ? "Entrando..." : "Login"}
         </button>
         {error && <p style={styles.error}>{error}</p>}
+        <p style={styles.Text}>Ainda não possui uma conta? <a href="/cadastro">Cadastrar</a></p>
       </form>
     </div>
   );
@@ -92,6 +93,9 @@ const styles = {
     alignItems: "center",
     height: "100vh",
     backgroundColor: "#f4f4f9",
+  },
+  Text :{
+    color: "#000",
   },
   form: {
     padding: "2rem",
