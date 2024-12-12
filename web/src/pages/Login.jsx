@@ -61,7 +61,7 @@ const Login = () => {
 
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Email"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           style={styles.input}
@@ -79,7 +79,7 @@ const Login = () => {
           {loading ? "Entrando..." : "Login"}
         </button>
         {error && <p style={styles.error}>{error}</p>}
-        <p style={styles.Text}>Ainda não possui uma conta? <a href="/cadastro">Cadastrar</a></p>
+        <p style={styles.text}>Não possui um usuário ? Crie agora um <a href="/cadastro">cadastro</a></p>
       </form>
     </div>
   );
@@ -94,7 +94,7 @@ const styles = {
     height: "100vh",
     backgroundColor: "#f4f4f9",
   },
-  Text :{
+  text: {
     color: "#000",
   },
   form: {

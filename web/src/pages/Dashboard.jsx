@@ -40,10 +40,9 @@ const Dashboard = () => {
     <Container>
       <Header>Bem-vindo ao Sistema de Gerenciamento</Header>
       <LinkGroup>
-        <Button to="/consultas">Lista de Consultas</Button>
+        <Button to="/consultas">Minhas consultas</Button>
         <Button to="/medicos">Lista de Médicos</Button>
         <Button to="/consultas/agendar">Agendar Consulta</Button>
-        <Button to="/pacientes">Pacientes</Button>
       </LinkGroup>
     </Container>
   );
