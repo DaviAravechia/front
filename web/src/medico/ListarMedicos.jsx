@@ -119,45 +119,6 @@ const ListarMedicos = () => {
           ))}
         </tbody>
       </Table>
-
-      <Form onSubmit={handleSubmit}>
-        <h2>{editing ? 'Editar Médico' : 'Adicionar Médico'}</h2>
-        <Input
-          type="text"
-          name="nome"
-          value={medico.nome}
-          onChange={handleChange}
-          placeholder="Nome"
-          required
-        />
-        <Input
-          type="text"
-          name="especialidade"
-          value={medico.especialidade}
-          onChange={handleChange}
-          placeholder="Especialidade"
-        />
-        <Input
-          type="text"
-          name="crm"
-          value={medico.crm}
-          onChange={handleChange}
-          placeholder="CRM (Ex: 123456-SP)"
-          required
-        />
-        <Input
-          type="tel"
-          name="telefone"
-          value={medico.telefone}
-          onChange={handleChange}
-          placeholder="Telefone"
-          required
-        />
-        <SubmitButton type="submit">
-          {editing ? 'Salvar Alterações' : 'Adicionar Médico'}
-        </SubmitButton>
-        {success && <SuccessMessage>{success}</SuccessMessage>}
-      </Form>
     </Container>
   );
 };
@@ -168,6 +129,7 @@ export default ListarMedicos;
 const Container = styled.div`
   max-width: 900px;
   margin: 0 auto;
+  color: #000;
   padding: 20px;
   background-color: #f8f9fa;
   border-radius: 8px;

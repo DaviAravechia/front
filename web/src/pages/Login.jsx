@@ -63,7 +63,8 @@ const Login = () => {
           </button>
           {error && <p style={styles.error}>{error}</p>}
           <p style={styles.text}>
-            Não possui um usuário? Crie agora um <a href="/cadastro-master" style={styles.link}>cadastro</a>.
+            Não possui um usuário? Crie agora um <a href="/cadastro" style={styles.link}>cadastro</a>.<br/>
+            Cadastro médico <a href="/cadastro-master" style={styles.link}>aqui</a>.
           </p>
         </form>
       </div>

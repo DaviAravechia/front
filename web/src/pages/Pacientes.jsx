@@ -1,70 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import api from '../api';
-import BotaoInicio from '../botao/BotaoInicio';
-
-const Container = styled.div`
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-`;
-
-const Header = styled.h1`
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const SearchBar = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-`;
-
-const Th = styled.th`
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-`;
-
-const Td = styled.td`
-  border: 1px solid #ddd;
-  padding: 10px;
-`;
-
-const Button = styled.button`
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-
-  &.edit {
-    background-color: #007bff;
-    color: white;
-    margin-right: 5px;
-  }
-
-  &.delete {
-    background-color: #dc3545;
-    color: white;
-  }
-
-  &:hover {
-    opacity: 0.9;
-  }
-`;
 
 const Pacientes = () => {
   const [pacientes, setPacientes] = useState([]);
@@ -156,8 +89,80 @@ const Pacientes = () => {
           ))}
         </tbody>
       </Table>
+      
     </Container>
   );
 };
 
 export default Pacientes;
+
+  import React, { useEffect, useState } from 'react';
+  import styled from 'styled-components';
+  import { useNavigate } from 'react-router-dom';
+  import api from '../api';
+  import BotaoInicio from '../botao/BotaoInicio';
+  
+  const Container = styled.div`
+    max-width: 900px;
+    margin: 0 auto;
+    color: #000;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  `;
+  
+  const Header = styled.h1`
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  `;
+  const td = styled.td`
+    color: #555;
+  `;
+  const SearchBar = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  `;
+  
+  const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  `;
+  
+  const Th = styled.th`
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+  `;
+  
+  const Td = styled.td`
+    border: 1px solid #ddd;
+    padding: 10px;
+  `;
+  
+  const Button = styled.button`
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  
+    &.edit {
+      background-color: #007bff;
+      color: white;
+      margin-right: 5px;
+    }
+  
+    &.delete {
+      background-color: #dc3545;
+      color: white;
+    }
+  
+    &:hover {
+      opacity: 0.9;
+    }
+  `;

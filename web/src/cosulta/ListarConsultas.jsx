@@ -109,6 +109,7 @@ const Container = styled.div`
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
+  color: #000;
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

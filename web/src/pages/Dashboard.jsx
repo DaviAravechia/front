@@ -117,7 +117,6 @@ const Dashboard = () => {
         <Header>Bem-vindo ao Sistema de Gerenciamento</Header>
         <LinkGroup>
           <Button to="/pacientes">Pacientes</Button>
-          <Button to="/cadastro">Cadastro Paciente</Button>
           <Button to="/medicos">Lista de Médicos</Button>
           <Button to="/consultas/agendar">Agendar Consulta</Button>
           <Button to="/consultas">Consultas</Button>

@@ -158,13 +158,6 @@ const Cadastro = () => {
             onChange={(e) => setDataNascimento(e.target.value)}
             required
           />
-          <Input
-            type="time"
-            placeholder="Hora de Nascimento"
-            value={horaNascimento}
-            onChange={(e) => setHoraNascimento(e.target.value)}
-            required
-          />
         </DateTimeContainer>
         <Input
           type="text"
