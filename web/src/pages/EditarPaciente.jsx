@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../api';
+import BotaoInicio from '../botao/BotaoInicio';
 
 const Container = styled.div`
   max-width: 600px;
@@ -94,6 +95,7 @@ const EditarPaciente = () => {
 
   return (
     <Container>
+      <BotaoInicio/>
       <Header>Editar Paciente</Header>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>

@@ -5,7 +5,7 @@ import { refreshToken } from './auth'; // Importe a função de renovação do t
 
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/',
-    timeout: 5000, // Adiciona um timeout opcional
+    timeout: 10000, // Adiciona um timeout opcional
 });
 
 // Interceptador para adicionar o token no cabeçalho
@@ -65,6 +65,18 @@ const enviarDados = async () => {
         }
     }
 };
+
+const fetchPacientes = async () => {
+    setError(''); // Limpa mensagens de erro antes de cada nova tentativa
+    try {
+      const response = await api.get('/pacientes/');
+      setPacientes(response.data);
+      setFilteredPacientes(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar pacientes:', error.response?.data || error.message);
+      setError('Erro ao buscar pacientes. Tente novamente mais tarde.');
+    }
+  };
 
 // enviarDados();
 

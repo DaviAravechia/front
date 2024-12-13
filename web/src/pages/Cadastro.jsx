@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import api from "../api";
+import BotaoInicio from '../botao/BotaoInicio';
 
 const Container = styled.div`
   display: flex;
@@ -108,7 +109,7 @@ const Cadastro = () => {
       });
 
       alert("Cadastro realizado com sucesso!");
-      navigate("/"); // Redireciona para o login após o cadastro
+      navigate("/dashboard"); // Redireciona para o login após o cadastro
     } catch (err) {
       console.error("Erro ao realizar cadastro:", err.response?.data || err.message);
 
@@ -125,6 +126,7 @@ const Cadastro = () => {
 
   return (
     <Container>
+        <BotaoInicio/>
       <Form onSubmit={handleCadastro}>
         <Title>Cadastro</Title>
         <Input
