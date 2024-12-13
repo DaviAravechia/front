@@ -5,7 +5,7 @@ import { refreshToken } from './auth'; // Importe a função de renovação do t
 
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/',
-    timeout: 10000, // Adiciona um timeout opcional
+    timeout: 15000, // Adiciona um timeout opcional
 });
 
 // Interceptador para adicionar o token no cabeçalho

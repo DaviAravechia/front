@@ -97,7 +97,6 @@ const ListarMedicos = () => {
             <Th>CRM</Th>
             <Th>Especialidade</Th>
             <Th>Telefone</Th>
-            <Th>Ações</Th>
           </tr>
         </thead>
         <tbody>
@@ -107,14 +106,6 @@ const ListarMedicos = () => {
               <Td>{medico.crm}</Td>
               <Td>{medico.especialidade || 'Não informado'}</Td>
               <Td>{medico.telefone}</Td>
-              <Td>
-                <Button className="edit" onClick={() => handleEdit(medico)}>
-                  Editar
-                </Button>
-                <Button className="delete" onClick={() => handleDelete(medico.uuid)}>
-                  Excluir
-                </Button>
-              </Td>
             </tr>
           ))}
         </tbody>

@@ -91,28 +91,28 @@ const CadastrarMedico = () => {
           placeholder="Nome"
           required
         />
+          <Input
+            type="text"
+            name="crm"
+            value={medico.crm}
+            onChange={handleChange}
+            placeholder="CRM (Ex: 123456-SP)"
+            required
+          />
+          <Input
+            type="tel"
+            name="telefone"
+            value={medico.telefone}
+            onChange={handleChange}
+            placeholder="Telefone"
+            required
+          />
         <Input
           type="text"
           name="especialidade"
           value={medico.especialidade}
           onChange={handleChange}
           placeholder="Especialidade"
-        />
-        <Input
-          type="text"
-          name="crm"
-          value={medico.crm}
-          onChange={handleChange}
-          placeholder="CRM (Ex: 123456-SP)"
-          required
-        />
-        <Input
-          type="tel"
-          name="telefone"
-          value={medico.telefone}
-          onChange={handleChange}
-          placeholder="Telefone"
-          required
         />
         <SubmitButton type="submit">
           {editing ? 'Salvar Alterações' : 'Adicionar Médico'}
