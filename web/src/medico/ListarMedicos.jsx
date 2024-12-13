@@ -42,6 +42,13 @@ const ListarMedicos = () => {
     setError('');
     setSuccess('');
 
+    // Verifica se o CRM já existe no frontend
+    const crmExists = medicos.some((m) => m.crm === medico.crm);
+    if (crmExists && !editing) {
+      setError('Erro: Este CRM já está cadastrado.');
+      return;
+    }
+
     try {
       if (editing) {
         await api.put(`/medicos/${editing}/`, medico);
@@ -55,7 +62,7 @@ const ListarMedicos = () => {
       fetchMedicos();
     } catch (err) {
       if (err.response?.data?.crm) {
-        setError(err.response.data.crm[0]);
+        setError(`Erro: ${err.response.data.crm[0]}`);
       } else {
         setError('Erro ao salvar médico. Verifique os dados e tente novamente.');
       }
@@ -156,6 +163,7 @@ const ListarMedicos = () => {
         <SubmitButton type="submit">
           {editing ? 'Salvar Alterações' : 'Adicionar Médico'}
         </SubmitButton>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         {success && <SuccessMessage>{success}</SuccessMessage>}
       </Form>
     </Container>
@@ -163,6 +171,7 @@ const ListarMedicos = () => {
 };
 
 export default ListarMedicos;
+
 
 // Estilizações
 const Container = styled.div`

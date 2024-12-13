@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import api from "../api";
@@ -11,6 +11,14 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   background-color: #f4f4f9;
+  padding: 20px; /* Adicionado para evitar problemas em telas pequenas */
+`;
+
+const HeaderBar = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* Alinha o botão Início à esquerda */
+  margin-bottom: 20px; /* Espaço entre o botão e o formulário */
 `;
 
 const Form = styled.form`
@@ -83,7 +91,7 @@ const Cadastro = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
-  const [horaNascimento, setHoraNascimento] = useState(""); // Novo campo
+  const [horaNascimento, setHoraNascimento] = useState("");
   const [telefone, setTelefone] = useState("");
   const [cpf, setCpf] = useState("");
   const [historicoMedico, setHistoricoMedico] = useState("");
@@ -109,11 +117,10 @@ const Cadastro = () => {
       });
 
       alert("Cadastro realizado com sucesso!");
-      navigate("/dashboard"); // Redireciona para o login após o cadastro
+      navigate("/dashboard"); // Redireciona para o dashboard após o cadastro
     } catch (err) {
       console.error("Erro ao realizar cadastro:", err.response?.data || err.message);
 
-      // Exibe erro retornado pela API ou mensagem genérica
       if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else {
@@ -126,7 +133,9 @@ const Cadastro = () => {
 
   return (
     <Container>
-        <BotaoInicio/>
+      <HeaderBar>
+        <BotaoInicio />
+      </HeaderBar>
       <Form onSubmit={handleCadastro}>
         <Title>Cadastro</Title>
         <Input
