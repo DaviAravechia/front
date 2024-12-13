@@ -12,6 +12,7 @@ import AgendarConsulta from './cosulta/AgendarConsulta';
 import EditarConsulta from './cosulta/EditarConsulta'; // Importar o componente de edição de consultas
 import Dashboard from './pages/Dashboard'; // Importação do Dashboard
 import AdminDashboard from './pages/AdminDashboard'; // Importação do Admin Dashboard
+import CadastroUsuarioMaster from './pages/CadastroUsuarioMaster'
 
 function AppRoutes() {
   return (
@@ -74,6 +75,15 @@ function AppRoutes() {
             <>
               <Navbar />
               <CadastrarMedico />
+            </>
+          }
+        />
+        <Route
+          path="/cadastro-master"
+          element={
+            <>
+              <Navbar />
+              <CadastroUsuarioMaster />
             </>
           }
         />
