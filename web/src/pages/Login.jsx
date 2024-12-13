@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Para redirecionamento após login
-import api from "../api"; // Certifique-se de que a URL base está configurada corretamente
+import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isIntranet, setIsIntranet] = useState(false); // Alternar entre login comum e intranet
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -22,12 +21,7 @@ const Login = () => {
       localStorage.setItem("accessToken", response.data.access);
       localStorage.setItem("refreshToken", response.data.refresh);
 
-      // Redirecionar com base no tipo de usuário
-      if (isIntranet) {
-        navigate("/dashboard"); // Página para superusuários
-      } else {
-        navigate("/dashboard"); // Página para usuários comuns
-      }
+      navigate("/dashboard");
     } catch (err) {
       console.error("Erro no login:", err.response?.data || err.message);
       setError(err.response?.data?.detail || "Erro ao fazer login. Verifique suas credenciais.");
@@ -38,49 +32,41 @@ const Login = () => {
 
   return (
     <div style={styles.container}>
-      <form onSubmit={handleLogin} style={styles.form}>
-        <h1 style={styles.title}>Login</h1>
-
-        {/* Alternar entre Usuário e Intranet */}
-        <div style={styles.toggleContainer}>
-          <button
-            type="button"
-            onClick={() => setIsIntranet(false)}
-            style={isIntranet ? styles.toggleButton : styles.activeToggleButton}
-          >
-            Usuário
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsIntranet(true)}
-            style={isIntranet ? styles.activeToggleButton : styles.toggleButton}
-          >
-            Intranet
-          </button>
-        </div>
-
-        <input
-          type="text"
-          placeholder="Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={styles.input}
-          required
+      <div style={styles.imageContainer}>
+        <img
+          src="https://media.discordapp.net/attachments/828314681243467780/1316947561592127618/female-nurse-clinic-practicing-medicine.jpg?ex=675ce67e&is=675b94fe&hm=a34f70c0c8f3e21d11ef97fd9c96e73d32fa54c9e8c71738d40d0fe7f6a98f99&=&format=webp&width=526&height=350" // Substitua por uma URL da imagem que preferir
+          alt="Imagem de destaque"
+          style={styles.image}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-          required
-        />
-        <button type="submit" style={styles.button} disabled={loading}>
-          {loading ? "Entrando..." : "Login"}
-        </button>
-        {error && <p style={styles.error}>{error}</p>}
-        <p style={styles.text}>Não possui um usuário ? Crie agora um <a href="/cadastro">cadastro</a></p>
-      </form>
+      </div>
+      <div style={styles.formContainer}>
+        <form onSubmit={handleLogin} style={styles.form}>
+          <h1 style={styles.title}>Login</h1>
+          <input
+            type="text"
+            placeholder="Usuário"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            style={styles.input}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+            required
+          />
+          <button type="submit" style={styles.button} disabled={loading}>
+            {loading ? "Entrando..." : "Login"}
+          </button>
+          {error && <p style={styles.error}>{error}</p>}
+          <p style={styles.text}>
+            Não possui um usuário? Crie agora um <a href="/cadastro" style={styles.link}>cadastro</a>.
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
@@ -89,19 +75,31 @@ const Login = () => {
 const styles = {
   container: {
     display: "flex",
+    height: "100vh",
+  },
+  imageContainer: {
+    flex: 1,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
     backgroundColor: "#f4f4f9",
   },
-  text: {
-    color: "#000",
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
+  formContainer: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   form: {
     padding: "2rem",
     borderRadius: "8px",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#fff",
     width: "100%",
     maxWidth: "400px",
     textAlign: "center",
@@ -109,6 +107,8 @@ const styles = {
   title: {
     marginBottom: "1.5rem",
     color: "#333",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
   },
   input: {
     width: "100%",
@@ -121,39 +121,28 @@ const styles = {
   button: {
     width: "100%",
     padding: "10px",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#007BFF",
     color: "#fff",
     border: "none",
     borderRadius: "4px",
     fontSize: "1rem",
     cursor: "pointer",
+    transition: "background-color 0.3s ease",
   },
   error: {
     marginTop: "1rem",
     color: "red",
     fontSize: "0.9rem",
   },
-  toggleContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: "1rem",
+  text: {
+    marginTop: "1rem",
+    fontSize: "0.9rem",
+    color: "#666",
   },
-  toggleButton: {
-    width: "48%",
-    padding: "10px",
-    backgroundColor: "#ddd",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  activeToggleButton: {
-    width: "48%",
-    padding: "10px",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+  link: {
+    color: "#007BFF",
+    textDecoration: "none",
+    fontWeight: "bold",
   },
 };
 
