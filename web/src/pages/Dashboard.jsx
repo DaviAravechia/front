@@ -120,6 +120,7 @@ const Dashboard = () => {
           <Button to="/cadastro">Cadastro Paciente</Button>
           <Button to="/medicos">Lista de Médicos</Button>
           <Button to="/consultas/agendar">Agendar Consulta</Button>
+          <Button to="/consultas">Consultas</Button>
         </LinkGroup>
       </MenuSection>
     </Container>
